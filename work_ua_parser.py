@@ -21,19 +21,16 @@ def get_jobs(name: str, city: str) -> list[dict]:
     retval = []
 
     for div in soup.find_all(
-            "div",
-            class_="card card-hover card-search card-visited wordwrap job-link js-job-link-blank mt-lg",
+        "div",
+        class_="card card-hover card-search card-visited wordwrap job-link js-job-link-blank mt-lg",
     ) + soup.find_all(
         "div",
         class_="card card-hover card-search card-visited wordwrap job-link js-job-link-blank",
     ):
-        job = {
-            "title": get_title(div),
-            "company": get_company(div)
-        }
+        job = {"title": get_title(div), "company": get_company(div)}
         salary = get_salary(div)
         if salary:
-            job['salary'] = salary
+            job["salary"] = salary
 
         details = get_details(div)
 
@@ -70,18 +67,18 @@ def get_details(div):
 
     address_li = info_ul.find_all("li", class_="text-indent no-style mt-sm mb-0")
 
-    retval = {'url': url}
+    retval = {"url": url}
 
     for li in address_li:
         if li.span["title"] == "Адреса роботи":
             address = li.text.split()
             address = " ".join(address)
             address = address.replace("На мапі", "")
-            retval['address'] = address
+            retval["address"] = address
 
             # print(address)
 
     phone_span = soup_.find("span", id="contact-phone")
     if phone_span:
-        retval['phone'] = phone_span.a.text
+        retval["phone"] = phone_span.a.text
     return retval
