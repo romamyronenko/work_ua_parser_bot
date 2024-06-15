@@ -39,8 +39,8 @@ async def change_city(message: Message, state: "FSMContext") -> None:
 
 @router.message(States.ENTER_CITY)
 async def enter_city(message: Message, state: "FSMContext") -> None:
-    await message.answer(f'city changed to {message.text}')
-    await state.set_data({'city': message.text})
+    await message.answer(f"city changed to {message.text}")
+    await state.set_data({"city": message.text})
     await state.set_state(None)
 
 
@@ -49,11 +49,14 @@ async def echo_handler(message: Message, state: "FSMContext") -> None:
     try:
         await message.send_copy(chat_id=message.chat.id)
         data = await state.get_data()
-        city = data.get('city')
-        await message.answer(f'Your_city: {city}')
+        city = data.get("city")
+        await message.answer(f"Your_city: {city}")
         jobs = get_jobs(message.text, city)
         for job in jobs:
-            await message.answer(prettify_job(job), link_preview_options=LinkPreviewOptions(is_disabled=True))
+            await message.answer(
+                prettify_job(job),
+                link_preview_options=LinkPreviewOptions(is_disabled=True),
+            )
     except TypeError:
         await message.answer("Nice try!")
 
