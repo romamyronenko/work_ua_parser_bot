@@ -1,7 +1,7 @@
-import json
 from types import SimpleNamespace
 from unittest import mock
 
+from tests.utils import get_json_from_data, get_from_data
 from work_ua_parser import get_jobs
 
 file_by_url_start = {
@@ -14,8 +14,7 @@ def mock_get(url):
     for k, v in file_by_url_start.items():
 
         if url.startswith(k):
-            with open(f"data_for_tests/{v}", "r", encoding="utf-8") as f:
-                html = f.read()
+            html = get_from_data(v)
 
     mock_response = SimpleNamespace()
     mock_response.text = html
@@ -23,8 +22,7 @@ def mock_get(url):
 
 
 def test_get_jobs():
-    with open("data_for_tests/expected_job.json", "r") as f:
-        expected_result = json.loads(f.read())
+    expected_result = get_json_from_data("expected_job.json")
 
     with mock.patch("requests.get", new=mock_get):
         jobs = get_jobs("", "")
