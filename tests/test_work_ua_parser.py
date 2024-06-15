@@ -12,7 +12,6 @@ file_by_url_start = {
 
 def mock_get(url):
     for k, v in file_by_url_start.items():
-
         if url.startswith(k):
             html = get_from_data(v)
 
